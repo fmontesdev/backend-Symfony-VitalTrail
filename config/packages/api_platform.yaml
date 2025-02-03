@@ -1,0 +1,29 @@
+api_platform:
+    title: VitalTrail
+    version: 1.0.0
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/Auth/Domain/Entity'
+            - '%kernel.project_dir%/src/Auth/Presentation/InputAdapter/Resource'
+            - '%kernel.project_dir%/src/Profiles/Domain/Entity'
+            - '%kernel.project_dir%/src/Profiles/Presentation/InputAdapter/Resource'
+            - '%kernel.project_dir%/src/Routes/Domain/Entity'
+            - '%kernel.project_dir%/src/Routes/Presentation/InputAdapter/Resource'
+            - '%kernel.project_dir%/src/Notifications/Domain/Entity'
+            # - '%kernel.project_dir%/src/Notifications/Presentation/Resource'
+            - '%kernel.project_dir%/src/Suscriptions/Domain/Entity'
+            # - '%kernel.project_dir%/src/Suscriptions/Presentation/Resource'
+    formats:
+        json:
+            mime_types: ['application/json']
+        html:
+            mime_types: ['text/html']
+    swagger:
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header
+    # defaults:
+    #     stateless: true
+    #     cache_headers:
+    #         vary: ['Content-Type', 'Authorization', 'Origin']

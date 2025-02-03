@@ -17,8 +17,36 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
             - '../src/Kernel.php'
+    
+    App\Auth\:
+        resource: '../src/Auth'
+        exclude:
+            - '../src/Auth/Domain/Entity/'
+
+    App\Profiles\:
+        resource: '../src/Profiles'
+        exclude:
+            - '../src/Profiles/Domain/Entity/'
+
+    App\Routes\:
+        resource: '../src/Routes'
+        exclude:
+            - '../src/Routes/Domain/Entity/'
+
+    App\Shared\Domain\Exception\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Notifications\:
+        resource: '../src/Notifications'
+        exclude:
+            - '../src/Notifications/Domain/Entity/'
+
+    App\Suscriptions\:
+        resource: '../src/Suscriptions'
+        exclude:
+            - '../src/Suscriptions/Domain/Entity/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

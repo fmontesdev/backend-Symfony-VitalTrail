@@ -1,0 +1,95 @@
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        # users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Auth\Domain\Entity\User
+                property: username
+                
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        # login:
+        #     pattern: ^/api/users/login
+        #     stateless: true
+            # json_login:
+            #     check_path: /api/users/login
+            #     success_handler: lexik_jwt_authentication.handler.authentication_success
+            #     failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            #     username_path: email
+            #     password_path: password
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            # json_login:
+            #     check_path: /api/users/login # or, if you have defined a route for your login path, the route name you used
+            #     success_handler: lexik_jwt_authentication.handler.authentication_success
+            #     failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~ # Usa JWT para proteger esta sección
+            entry_point: jwt
+            refresh_jwt:
+                check_path: api_refresh_token # or, you may use the `api_refresh_token` route name
+                # or if you have more than one user provider
+                # provider: user_provider_name
+            logout:
+                path: api_token_invalidate
+        main:
+            lazy: true
+            provider: app_user_provider
+            # provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/api/users, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/profiles, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
+        - { path: ^/api/profiles/[a-zA-Z0-9\-]+/follow, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
+        - { path: ^/api/profiles/[a-zA-Z0-9\-]+/unfollow, roles: IS_AUTHENTICATED_FULLY, methods: [DELETE] }
+
+        - { path: ^/api/routes/\d+/images, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
+        - { path: ^/api/routes/\d+/addImg, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/comments, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/comments, roles: IS_AUTHENTICATED_FULLY, methods: [POST, DELETE] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/ratings, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/ratings, roles: IS_AUTHENTICATED_FULLY, methods: [POST, DELETE] }
+        
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/favorite, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/unfavorite, roles: IS_AUTHENTICATED_FULLY, methods: [DELETE] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+, roles: IS_AUTHENTICATED_FULLY, methods: [PUT, DELETE] }
+        - { path: ^/api/routes, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/routes, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
+        - { path: ^/api/image_route, roles: IS_AUTHENTICATED_FULLY, methods: [DELETE] }
+
+        # - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST] }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/api/profiles/(.+), roles: PUBLIC_ACCESS, methods: [GET] }
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon

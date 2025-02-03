@@ -1,0 +1,6 @@
+gesdinet_jwt_refresh_token:
+    # refresh_token_class: Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken
+    refresh_token_class: App\Auth\Domain\Entity\RefreshToken
+    ttl: 2592000 # Tiempo de vida del refresh token en segundos (30 días)
+    single_use: true # Solo un refresh token activo por usuario
+    # ttl_update: true
