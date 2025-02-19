@@ -58,6 +58,7 @@ security:
         - { path: ^/api/users, roles: PUBLIC_ACCESS }
         - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/profile, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
         - { path: ^/api/profiles, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
         - { path: ^/api/profiles/[a-zA-Z0-9\-]+/follow, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
         - { path: ^/api/profiles/[a-zA-Z0-9\-]+/unfollow, roles: IS_AUTHENTICATED_FULLY, methods: [DELETE] }
@@ -65,7 +66,8 @@ security:
         - { path: ^/api/routes/\d+/images, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
         - { path: ^/api/routes/\d+/addImg, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
         - { path: ^/api/routes/[a-zA-Z0-9\-]+/comments, roles: PUBLIC_ACCESS, methods: [GET] }
-        - { path: ^/api/routes/[a-zA-Z0-9\-]+/comments, roles: IS_AUTHENTICATED_FULLY, methods: [POST, DELETE] }
+        - { path: ^/api/routes/[a-zA-Z0-9\-]+/comments, roles: IS_AUTHENTICATED_FULLY, methods: [POST] }
+        - { path: ^/api//comments/d+, roles: IS_AUTHENTICATED_FULLY, methods: [DELETE] }
         - { path: ^/api/routes/[a-zA-Z0-9\-]+/ratings, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/routes/[a-zA-Z0-9\-]+/ratings, roles: IS_AUTHENTICATED_FULLY, methods: [POST, DELETE] }
         
