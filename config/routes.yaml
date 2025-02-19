@@ -4,9 +4,6 @@
 #         namespace: App\Presentation\Controller
 #     type: attribute
 
-# api_users_login:
-#     path: /api/users/login
-
 api_refresh_token:
     path: /api/token/refresh
 

@@ -8,6 +8,26 @@ framework:
     #esi: true
     #fragments: true
 
+    # cache:
+    #     default_redis_provider: redis://localhost
+    #     pools:
+    #         doctrine.metadata_cache_pool:
+    #             adapter: cache.adapter.filesystem
+    #             public: true
+    #         doctrine.query_cache_pool:
+    #             adapter: cache.adapter.filesystem
+    #             public: true
+    #         doctrine.result_cache_pool:
+    #             adapter: cache.adapter.filesystem
+    #             public: true
+    #         cache.adapter.filesystem:
+    #             adapter: cache.adapter.filesystem
+    #             public: true
+    #             default_lifetime: 31536000  # 1 año
+    #     app: cache.adapter.filesystem
+    #     system: cache.adapter.system
+    #     directory: '%kernel.cache_dir%/pools'
+
 when@test:
     framework:
         test: true

@@ -49,11 +49,20 @@ doctrine:
                 alias: Suscriptions
         controller_resolver:
             auto_mapping: false
+        # metadata_cache_driver:
+        #     type: pool 
+        #     pool: cache.adapter.filesystem
+        # query_cache_driver:
+        #     type: pool
+        #     pool: cache.adapter.filesystem
+        # result_cache_driver:
+        #     type: pool
+        #     pool: cache.adapter.filesystem
         # second_level_cache:
         #     enabled: true
         #     region_cache_driver:
         #         type: pool
-        #         pool: doctrine.result_cache_pool
+        #         pool: cache.adapter.filesystem
 
 # framework:
 #     cache:
