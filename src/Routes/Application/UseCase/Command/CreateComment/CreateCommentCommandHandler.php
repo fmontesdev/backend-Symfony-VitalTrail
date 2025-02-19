@@ -51,7 +51,6 @@ class CreateCommentCommandHandler
         // Guarda el comentario en la base de datos
         $comment = $this->commentService->save($command->data->body, $currentUser, $route, null);
 
-        // dd($comment);
         return $this->commentService->toDto($comment);
 
         // Obtiene los comentarios de la ruta
