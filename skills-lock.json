@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "symfony:api-platform-dto-resources": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "31a657684f201d26d8afb7d95bd7b532aab61dea2b9c8acc43f0987672427d9d"
+    },
+    "symfony:api-platform-state-providers": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "c54dd31e09a074100bff875be66b89d0125b50967131cb03886e71a45cc31354"
+    },
+    "symfony:controller-cleanup": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "e5d07d6fc5d73185e7ea0792aa9ca99ac46c9ca5efa5129f0b0e39562b067e3e"
+    },
+    "symfony:cqrs-and-handlers": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "3924973ef4f53fa3ab9cf838d4bd4ae08921d4a29c8dbf2c1b57ee065bd2003c"
+    },
+    "symfony:doctrine-migrations": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "4ddc2c323e14f49b7cb44d61948f42a429a945f76ae5331e0e51dbf5169b782a"
+    },
+    "symfony:ports-and-adapters": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "0966214767fe3ed7390622bcfbe0e5e1a68b64b022fb76ae516f83a792551e4d"
+    },
+    "symfony:quality-checks": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "81712bad7ff1c449691e29e34a24773f9a9023c648f3328c785d271650e8bb7b"
+    },
+    "symfony:value-objects-and-dtos": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "c130838a15eddbdc77c1d5f945ca989602a1244eaa094ee18c754a24c75da2cf"
+    }
+  }
+}
