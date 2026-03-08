@@ -40,6 +40,12 @@ class ClientMapper
         if ($dto->phone !== null) {
             $result->setPhone($dto->phone);
         }
+        if ($dto->customerId !== null) {
+            $result->setCustomerId($dto->customerId);
+        }
+        if ($dto->paymentMethodId !== null) {
+            $result->setPaymentMethodId($dto->paymentMethodId);
+        }
         return $result;
     }
 
@@ -49,6 +55,8 @@ class ClientMapper
         $result->idClient = $entity->getIdClient();
         $result->user = $entity->getUser()->getIdUser();
         $result->phone = $entity->getPhone();
+        $result->customerId = $entity->getCustomerId();
+        $result->paymentMethodId = $entity->getPaymentMethodId();
         return $result;
     }
 }

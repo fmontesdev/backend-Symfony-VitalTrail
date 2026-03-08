@@ -49,4 +49,22 @@ final class ClientDto
         ProfileConfig::OUTPUT_LIST,
     ])]
     public ?string $phone = null;
+
+    #[Groups([
+        UserConfig::INPUT_UPDATE,
+        UserConfig::OUTPUT,
+        UserConfig::OUTPUT_LOGIN,
+        ProfileConfig::OUTPUT,
+        ProfileConfig::OUTPUT_LIST,
+    ])]
+    public ?string $customerId = null;
+
+    #[Groups([
+        UserConfig::INPUT_UPDATE,
+        UserConfig::OUTPUT,
+        UserConfig::OUTPUT_LOGIN,
+        ProfileConfig::OUTPUT,
+        ProfileConfig::OUTPUT_LIST,
+    ])]
+    public ?string $paymentMethodId = null;
 }

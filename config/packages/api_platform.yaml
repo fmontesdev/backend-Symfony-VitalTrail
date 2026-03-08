@@ -11,7 +11,7 @@ api_platform:
             - '%kernel.project_dir%/src/Routes/Presentation/InputAdapter/Resource'
             - '%kernel.project_dir%/src/Notifications/Domain/Entity'
             # - '%kernel.project_dir%/src/Notifications/Presentation/Resource'
-            - '%kernel.project_dir%/src/Suscriptions/Domain/Entity'
+            - '%kernel.project_dir%/src/Subscriptions/Domain/Entity'
             # - '%kernel.project_dir%/src/Suscriptions/Presentation/Resource'
     formats:
         json:

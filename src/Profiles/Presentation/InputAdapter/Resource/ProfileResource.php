@@ -58,7 +58,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 'groups' => [
                     ProfileConfig::OUTPUT,
                 ],
-                'skip_null_values' => true,
+                'skip_null_values' => false,
             ],
             openapi: new Operation(
                 summary: '',

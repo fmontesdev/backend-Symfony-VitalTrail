@@ -44,9 +44,9 @@ doctrine:
             Suscriptions:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Suscriptions/Domain/Entity'
-                prefix: 'App\Suscriptions\Domain\Entity'
-                alias: Suscriptions
+                dir: '%kernel.project_dir%/src/Subscriptions/Domain/Entity'
+                prefix: 'App\Subscriptions\Domain\Entity'
+                alias: Subscriptions
         controller_resolver:
             auto_mapping: false
         # metadata_cache_driver:
