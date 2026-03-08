@@ -43,10 +43,16 @@ services:
         exclude:
             - '../src/Notifications/Domain/Entity/'
 
-    App\Suscriptions\:
-        resource: '../src/Suscriptions'
+    App\Subscriptions\:
+        resource: '../src/Subscriptions'
         exclude:
-            - '../src/Suscriptions/Domain/Entity/'
+            - '../src/Subscriptions/Domain/Entity/'
+
+    app.event.jwt_created_listener:
+        class: App\Security\Infra\EventListener\JWTCreatedListener
+        arguments: ['@request_stack']
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

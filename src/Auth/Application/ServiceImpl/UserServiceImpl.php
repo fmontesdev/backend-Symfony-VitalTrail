@@ -15,7 +15,7 @@ use App\Auth\Application\Exception\EmailIsNotValidException;
 use App\Auth\Application\Exception\PasswordIsNotValidException;
 use App\Security\Application\SecurityContext;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Security\Application\Jwt\JwtTokenGenerator;
+use App\Security\Infra\Jwt\JwtTokenGenerator;
 use App\Security\Domain\Exception\UserIsNotAuthenticatedException;
 
 class UserServiceImpl implements UserService

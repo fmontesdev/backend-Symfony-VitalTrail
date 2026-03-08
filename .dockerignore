@@ -1,0 +1,26 @@
+<!-- Dependencias de Node -->
+node_modules/
+
+<!-- Dependencias de Composer -->
+vendor/
+
+<!-- Directorio var de Symfony (cache, logs, sessions) -->
+var/
+
+<!-- Variables de entorno -->
+.env
+.env.*
+
+<!-- IDE y archivos de sistema -->
+.idea/
+.vscode/
+*.swp
+
+<!-- Git y Docker -->
+.git/
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+
+<!-- Logs y archivos temporales -->
+*.log
