@@ -43,7 +43,9 @@ class RouteSession
     #[ORM\PrePersist]
     public function setTimestampsOnCreate(): void
     {
-        $this->startAt = new \DateTimeImmutable();
+        if ($this->startAt === null) {
+            $this->startAt = new \DateTimeImmutable();
+        }
         $this->createAt = new \DateTimeImmutable();
     }
 

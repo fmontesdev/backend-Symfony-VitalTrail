@@ -13,6 +13,7 @@ api_platform:
             # - '%kernel.project_dir%/src/Notifications/Presentation/Resource'
             - '%kernel.project_dir%/src/Subscriptions/Domain/Entity'
             # - '%kernel.project_dir%/src/Suscriptions/Presentation/Resource'
+            - '%kernel.project_dir%/src/Sessions/Presentation/InputAdapter/Resource'
     formats:
         json:
             mime_types: ['application/json']

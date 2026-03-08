@@ -16,6 +16,9 @@ final class RouteSessionDto
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?int $idSession = null;
 
+    #[Groups([RouteSessionConfig::INPUT])]
+    public ?int $idRoute = null;
+
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public mixed $user = null;
 

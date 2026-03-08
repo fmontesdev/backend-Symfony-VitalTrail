@@ -24,6 +24,7 @@ framework:
             # 'App\Routes\Application\UseCase\Command\CreateRoute\CreateUserCommand': command.bus
             'App\Routes\Application\UseCase\*': sync
             'App\Profiles\Application\UseCase\*': sync
+            'App\Sessions\Application\UseCase\*': sync
 
 # when@test:
 #    framework:
