@@ -13,25 +13,25 @@ use DateTimeInterface;
 
 final class WellbeingCheckinDto
 {
-    #[Groups([WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?int $idCheckin = null;
 
-    #[Groups([WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?int $idSession = null;
 
-    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?int $energy = null;
 
-    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?int $stress = null;
 
-    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?int $mood = null;
 
-    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::INPUT, WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?string $notes = null;
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
-    #[Groups([WellbeingCheckinConfig::OUTPUT])]
+    #[Groups([WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
     public ?DateTimeInterface $createAt = null;
 }

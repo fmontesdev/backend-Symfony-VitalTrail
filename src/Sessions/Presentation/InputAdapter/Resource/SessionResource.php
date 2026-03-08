@@ -11,6 +11,8 @@ use App\Sessions\Application\Dto\WellbeingCheckinDto;
 use App\Sessions\Presentation\InputAdapter\Processor\CheckinCreateProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionCreateProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionDeleteProcessor;
+use App\Sessions\Presentation\InputAdapter\Provider\CheckinProvider;
+use App\Sessions\Presentation\InputAdapter\Provider\CheckinsProvider;
 use App\Sessions\Presentation\InputAdapter\Provider\SessionProvider;
 use App\Sessions\Presentation\InputAdapter\Provider\SessionsProvider;
 use ApiPlatform\Metadata\ApiProperty;
@@ -139,6 +141,44 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ],
             ),
         ),
+        new Get(
+            name: 'checkin_get',
+            uriTemplate: '/sessions/{id}/checkin',
+            provider: CheckinProvider::class,
+            normalizationContext: [
+                'groups' => [
+                    WellbeingCheckinConfig::OUTPUT,
+                ],
+            ],
+            read: false,
+            openapi: new Operation(
+                summary: '',
+                description: '',
+                parameters: [
+                    new Parameter(
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: ['type' => 'integer'],
+                    ),
+                ],
+            ),
+        ),
+        new Get(
+            name: 'checkins_list',
+            uriTemplate: '/checkins',
+            provider: CheckinsProvider::class,
+            normalizationContext: [
+                'groups' => [
+                    WellbeingCheckinConfig::OUTPUT_LIST,
+                ],
+            ],
+            read: false,
+            openapi: new Operation(
+                summary: '',
+                description: '',
+            ),
+        ),
     ],
 )]
 final class SessionResource
@@ -178,4 +218,7 @@ final class SessionResource
         WellbeingCheckinConfig::OUTPUT,
     ])]
     public ?WellbeingCheckinDto $checkin = null;
+
+    #[Groups([WellbeingCheckinConfig::OUTPUT_LIST])]
+    public array $checkins = [];
 }

@@ -8,6 +8,7 @@ use App\Sessions\Domain\Entity\WellbeingCheckin;
 use App\Sessions\Domain\OutputPort\WellbeingCheckinRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<WellbeingCheckin>
@@ -32,6 +33,20 @@ final class WellbeingCheckinRepositoryImpl extends ServiceEntityRepository imple
     public function findBySession(int $idSession): ?WellbeingCheckin
     {
         return $this->findOneBy(['session' => $idSession]);
+    }
+
+    /** @return WellbeingCheckin[] */
+    public function findByUser(Uuid $idUser): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT wc FROM App\Sessions\Domain\Entity\WellbeingCheckin wc
+                 JOIN wc.session s
+                 WHERE s.user = :idUser
+                 ORDER BY wc.createAt DESC'
+            )
+            ->setParameter('idUser', $idUser, 'uuid')
+            ->getResult();
     }
 
     public function save(WellbeingCheckin $entity): void
