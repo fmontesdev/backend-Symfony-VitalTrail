@@ -15,6 +15,7 @@ use Symfony\Component\Uid\Uuid;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Routes\Domain\Entity\Route;
+use App\Sessions\Domain\Entity\RouteSession;
 
 #[ORM\Entity(repositoryClass: UserRepositoryImpl::class)]
 #[ORM\Table(name: 'users')]
@@ -74,10 +75,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Route::class, orphanRemoval: true, fetch: 'LAZY')]
     private Collection $routes;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RouteSession::class, fetch: 'LAZY')]
+    private Collection $routeSessions;
+
     public function __construct()
     {
         $this->idUser = Uuid::v4(); // Genera un UUID al crear la entidad
         $this->routes = new ArrayCollection();
+        $this->routeSessions = new ArrayCollection();
     }
 
     public function getIdUser(): Uuid
@@ -275,6 +280,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         //     }
         // }
         // return $this;
+    }
+
+    /**
+     * @return Collection<int, RouteSession>
+     */
+    public function getRouteSessions(): Collection
+    {
+        return $this->routeSessions;
+    }
+
+    public function addRouteSession(RouteSession $routeSession): self
+    {
+        if (!$this->routeSessions->contains($routeSession)) {
+            $this->routeSessions->add($routeSession);
+        }
+        return $this;
+    }
+
+    public function removeRouteSession(RouteSession $routeSession): self
+    {
+        $this->routeSessions->removeElement($routeSession);
+        return $this;
     }
 
     // =============== Métodos de UserInterface =============== //

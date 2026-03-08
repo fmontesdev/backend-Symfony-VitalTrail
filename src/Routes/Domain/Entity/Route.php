@@ -10,6 +10,7 @@ use App\Routes\Domain\Enum\DifficultyRouteEnum;
 use App\Routes\Domain\Enum\TypeRouteEnum;
 use App\Routes\Application\Config\RouteConfig;
 use App\Routes\Domain\Repository\RouteRepository;
+use App\Sessions\Domain\Entity\RouteSession;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -80,6 +81,9 @@ class Route
     #[ORM\OneToMany(mappedBy: 'route', targetEntity: Rating::class, fetch: 'LAZY')]
     private Collection $ratings;
 
+    #[ORM\OneToMany(mappedBy: 'route', targetEntity: RouteSession::class, fetch: 'LAZY')]
+    private Collection $routeSessions;
+
     private $originalTitle;
 
     public function __construct()
@@ -87,6 +91,7 @@ class Route
         $this->images = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->routeSessions = new ArrayCollection();
     }
 
     #[ORM\PrePersist] // Se ejecuta antes de que la entidad se guarde por primera vez
@@ -350,6 +355,28 @@ class Route
     public function removeRating(Rating $rating): self
     {
         $this->ratings->removeElement($rating);
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RouteSession>
+     */
+    public function getRouteSessions(): Collection
+    {
+        return $this->routeSessions;
+    }
+
+    public function addRouteSession(RouteSession $routeSession): self
+    {
+        if (!$this->routeSessions->contains($routeSession)) {
+            $this->routeSessions->add($routeSession);
+        }
+        return $this;
+    }
+
+    public function removeRouteSession(RouteSession $routeSession): self
+    {
+        $this->routeSessions->removeElement($routeSession);
         return $this;
     }
 }

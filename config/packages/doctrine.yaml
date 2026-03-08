@@ -47,6 +47,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Subscriptions/Domain/Entity'
                 prefix: 'App\Subscriptions\Domain\Entity'
                 alias: Subscriptions
+            Sessions:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Sessions/Domain/Entity'
+                prefix: 'App\Sessions\Domain\Entity'
+                alias: Sessions
         controller_resolver:
             auto_mapping: false
         # metadata_cache_driver:
