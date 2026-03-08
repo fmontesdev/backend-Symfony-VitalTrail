@@ -24,12 +24,12 @@ class CommentsByUserQueryHandler
     }
 
     /**
-     * Selecciona todos los comentarios de una ruta
+     * Selecciona todos los comentarios de un usuario
      *
      * @param CommentsByUserQuery $query
-     * @return CommentDto[]|null
+     * @return CommentDto[]
      */
-    public function __invoke(CommentsByUserQuery $query): ?array
+    public function __invoke(CommentsByUserQuery $query): array
     {
         // Comprueba que el profile existe
         $user = $this->profileService->findProfileSafe((string) $query->username);
@@ -39,11 +39,8 @@ class CommentsByUserQueryHandler
             throw new NotAuthorizedResourceException();
         }
 
-        // Obtiene los comentarios del usuario
+        // Obtiene los comentarios del usuario (puede ser array vacío)
         $comments = $this->commentRepository->findCommentsByUser($user->getIdUser());
-        if (!$comments) {
-            return null;
-        }
         return array_map(fn (Comment $comment) => $this->commentService->toDto($comment), $comments);
     }
 }

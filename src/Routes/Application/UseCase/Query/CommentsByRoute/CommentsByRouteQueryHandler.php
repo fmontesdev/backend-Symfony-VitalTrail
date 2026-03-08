@@ -29,21 +29,18 @@ class CommentsByRouteQueryHandler
      * Selecciona todos los comentarios de una ruta
      *
      * @param CommentsByRouteQuery $query
-     * @return CommentDto[]|null
+     * @return CommentDto[]
      */
-    public function __invoke(CommentsByRouteQuery $query): ?array
+    public function __invoke(CommentsByRouteQuery $query): array
     {
         // Verifica si la ruta existe
         $route = $this->routeRepository->findBySlug($query->slug);
         if (!$route) {
             throw new RouteNotFoundException(null);
         }
-        
-        // Obtiene los comentarios de la ruta
+
+        // Obtiene los comentarios de la ruta (puede ser array vacío)
         $comments = $this->commentRepository->findCommentsByRoute($route->getIdRoute());
-        if (!$comments) {
-            return null;
-        }
         return array_map(fn (Comment $comment) => $this->commentService->toDto($comment), $comments);
     }
 }

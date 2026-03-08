@@ -27,15 +27,11 @@ class CommentsByUserProvider implements ProviderInterface
      * @param string[][] $context
      * @return CommentResource
      */
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): ?CommentResource
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): CommentResource
     {
         $result = new CommentResource();
         $query = new CommentsByUserQuery($uriVariables['username']);
-        $comments = $this->service->handle($query);
-        if ($comments) {
-            $result->comments = $comments;
-            return $result;
-        }
-        return null;
+        $result->comments = $this->service->handle($query) ?? [];
+        return $result;
     }
 }
