@@ -167,4 +167,12 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
+
+    public function sumAllDistances(): int
+    {
+        return (int) $this->createQueryBuilder('r')
+            ->select('COALESCE(SUM(r.distance), 0)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

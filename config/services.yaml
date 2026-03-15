@@ -39,6 +39,9 @@ services:
         exclude:
             - '../src/Sessions/Domain/Entity/'
 
+    App\Stats\:
+        resource: '../src/Stats'
+
     App\Shared\Domain\Exception\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Infra\OutputAdapter\Doctrine;
 
 use App\Auth\Domain\Entity\User;
+use App\Auth\Domain\Enum\RolUserEnum;
 use App\Auth\Domain\OutputPort\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,5 +40,17 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
     {
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
+    }
+
+    public function countActiveClients(): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.idUser)')
+            ->where('u.rol = :rol')
+            ->andWhere('u.isActive = true')
+            ->andWhere('u.isDeleted = false')
+            ->setParameter('rol', RolUserEnum::ROLE_CLIENT)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

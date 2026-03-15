@@ -34,4 +34,12 @@ class CategoryRouteRepositoryImpl extends ServiceEntityRepository implements Cat
     public function findAllCategoryRoutes(): array {
         return $this->findAll();
     }
+
+    public function countAllCategories(): int
+    {
+        return (int) $this->createQueryBuilder('c')
+            ->select('COUNT(c.idCategory)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

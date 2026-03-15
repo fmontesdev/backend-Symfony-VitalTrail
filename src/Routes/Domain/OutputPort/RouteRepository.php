@@ -28,5 +28,6 @@ interface RouteRepository
     ): array;
     public function save(Route $route): void;
     public function remove(Route $route): void;
-    public function countRoutes(string $category, string $location, string $title, int $distance, string $difficulty, string $typeRoute, string $author): int;
+    public function countRoutes(?string $category = null, ?string $location = null, ?string $title = null, ?int $distance = null, ?string $difficulty = null, ?string $typeRoute = null, ?string $author = null): int;
+    public function sumAllDistances(): int;
 }

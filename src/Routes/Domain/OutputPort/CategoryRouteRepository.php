@@ -10,4 +10,5 @@ interface CategoryRouteRepository
 {
     public function findByTitle(string $title): ?CategoryRoute;
     public function findAllCategoryRoutes(): array;
+    public function countAllCategories(): int;
 }

@@ -25,6 +25,7 @@ framework:
             'App\Routes\Application\UseCase\*': sync
             'App\Profiles\Application\UseCase\*': sync
             'App\Sessions\Application\UseCase\*': sync
+            'App\Stats\Application\UseCase\*': sync
 
 # when@test:
 #    framework:

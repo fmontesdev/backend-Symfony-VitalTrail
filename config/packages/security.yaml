@@ -83,6 +83,8 @@ security:
         - { path: ^/api/sessions, roles: IS_AUTHENTICATED_FULLY, methods: [GET, POST] }
         - { path: ^/api/sessions/\d+, roles: IS_AUTHENTICATED_FULLY, methods: [DELETE] }
 
+        - { path: ^/api/stats, roles: PUBLIC_ACCESS }
+
         # - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST] }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
