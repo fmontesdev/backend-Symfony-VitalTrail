@@ -93,6 +93,18 @@ use Symfony\Component\Validator\Constraints as Assert;
                         required: false,
                         schema: ['type' => 'integer'],
                     ),
+                    new Parameter(
+                        name: 'sortBy',
+                        in: 'query',
+                        required: false,
+                        schema: ['type' => 'string', 'enum' => ['favoritesCount', 'createdAt', 'title', 'distance']],
+                    ),
+                    new Parameter(
+                        name: 'order',
+                        in: 'query',
+                        required: false,
+                        schema: ['type' => 'string', 'enum' => ['asc', 'desc']],
+                    ),
                 ],
             ),
         ),

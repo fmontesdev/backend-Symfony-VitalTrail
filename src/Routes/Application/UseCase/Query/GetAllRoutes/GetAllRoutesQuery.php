@@ -18,5 +18,7 @@ final class GetAllRoutesQuery implements BaseQuery
         public readonly string|null $difficulty,
         public readonly string|null $typeRoute,
         public readonly string|null $author,
+        public readonly ?string $sortBy = null,
+        public readonly ?string $order = null,
     ) {}
 }

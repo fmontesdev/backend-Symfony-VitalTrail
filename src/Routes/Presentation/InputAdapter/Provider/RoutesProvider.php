@@ -39,6 +39,8 @@ class RoutesProvider implements ProviderInterface
         $author = $context['filters']['author'] ?? null;
         $limit = intval($context['filters']['limit'] ?? 10);
         $offset = intval($context['filters']['offset'] ?? 0);
+        $sortBy = $context['filters']['sortBy'] ?? null;
+        $order  = $context['filters']['order'] ?? null;
 
         $queryCount = new CountRoutesQuery(
             $category,
@@ -61,7 +63,9 @@ class RoutesProvider implements ProviderInterface
                 $distance,
                 $difficulty,
                 $typeRoute,
-                $author
+                $author,
+                $sortBy,
+                $order,
             );
             $result->routes = $this->service->handle($queryRoutes);
         }

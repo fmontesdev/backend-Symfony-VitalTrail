@@ -10,7 +10,22 @@ interface RouteRepository
 {
     public function findById(int $idRoute): ?Route;
     public function findBySlug(string $slug): ?Route;
-    public function findAllRoutes(int $limit, int $offset, string $category, string $location, string $title, int $distance, string $difficulty, string $typeRoute, string $autho): array;
+    /**
+     * @return Route[]
+     */
+    public function findAllRoutes(
+        int $limit,
+        int $offset,
+        ?string $category = null,
+        ?string $location = null,
+        ?string $title = null,
+        ?int $distance = null,
+        ?string $difficulty = null,
+        ?string $typeRoute = null,
+        ?string $author = null,
+        ?string $sortBy = null,
+        ?string $order = null,
+    ): array;
     public function save(Route $route): void;
     public function remove(Route $route): void;
     public function countRoutes(string $category, string $location, string $title, int $distance, string $difficulty, string $typeRoute, string $author): int;

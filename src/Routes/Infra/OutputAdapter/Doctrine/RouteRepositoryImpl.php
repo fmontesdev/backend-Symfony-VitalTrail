@@ -105,16 +105,38 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
         ?int $distance = null,
         ?string $difficulty = null,
         ?string $typeRoute = null,
-        ?string $author = null
+        ?string $author = null,
+        ?string $sortBy = null,
+        ?string $order = null,
     ): array {
-        $queryBuilder = $this->createRoutesQueryBuilder($category, $location, $title, $distance, $difficulty, $typeRoute, $author);
-        $queryBuilder
-            ->select('r')
-            ->orderBy('r.createdAt', 'DESC')
-            ->setFirstResult($offset)
+        $qb = $this->createRoutesQueryBuilder($category, $location, $title, $distance, $difficulty, $typeRoute, $author);
+
+        if ($sortBy === 'favoritesCount') {
+            $qb->addSelect(
+                '(SELECT COUNT(IDENTITY(fav.route)) FROM App\Routes\Domain\Entity\Favorite fav WHERE fav.route = r) AS HIDDEN favoritesCount'
+            );
+        }
+
+        $resolvedSortBy = $sortBy ?? 'createdAt';
+        $resolvedOrder  = strtoupper($order ?? 'desc');
+
+        if ($resolvedSortBy === 'favoritesCount') {
+            $qb->orderBy('favoritesCount', $resolvedOrder);
+        } else {
+            $fieldMap = [
+                'createdAt' => 'r.createdAt',
+                'title'     => 'r.title',
+                'distance'  => 'r.distance',
+            ];
+            $dbField = $fieldMap[$resolvedSortBy] ?? 'r.createdAt';
+            $qb->orderBy($dbField, $resolvedOrder);
+        }
+
+        $qb->setFirstResult($offset)
             ->setMaxResults($limit);
+
         /** @var Route[] */
-        $result = $queryBuilder->getQuery()->getResult();
+        $result = $qb->getQuery()->getResult();
         return $result;
     }
 
