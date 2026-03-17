@@ -6,9 +6,12 @@ namespace App\Profiles\Presentation\InputAdapter\Resource;
 
 use App\Profiles\Application\Config\ProfileConfig;
 use App\Profiles\Application\Dto\ProfileDto;
+use App\Profiles\Presentation\InputAdapter\Provider\FavoriteRoutesProvider;
 use App\Profiles\Presentation\InputAdapter\Provider\ProfilesProvider;
 use App\Profiles\Presentation\InputAdapter\Provider\ProfileProvider;
 use App\Profiles\Presentation\InputAdapter\Processor\FollowProcessor;
+use App\Routes\Application\Config\RouteConfig;
+use App\Routes\Application\Dto\RouteDto;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -21,6 +24,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
+        new Get(
+            name: 'profile_favorite_routes',
+            uriTemplate: '/profiles/{username}/favorites',
+            provider: FavoriteRoutesProvider::class,
+            normalizationContext: [
+                'groups' => [ProfileConfig::OUTPUT_FAVORITE_ROUTES, RouteConfig::OUTPUT_LIST],
+                'skip_null_values' => false,
+            ],
+            openapi: new Operation(
+                summary: '',
+                description: '',
+                parameters: [
+                    new Parameter(
+                        name: 'username',
+                        in: 'path',
+                        required: true,
+                        schema: ['type' => 'string'],
+                    ),
+                ],
+            ),
+        ),
         new Get(
             name: 'profile_follows_list',
             uriTemplate: '/profiles/{username}/{follows}',
@@ -159,4 +183,27 @@ final class ProfileResource
         ProfileConfig::OUTPUT,
     ])]
     public ?ProfileDto $profile = null;
+
+    /**
+     * @var RouteDto[]
+     */
+    #[ApiProperty(
+        builtinTypes: [
+            new Type(
+                builtinType: Type::BUILTIN_TYPE_ARRAY,
+                collection: true,
+                collectionValueType: [
+                    new Type(
+                        builtinType: Type::BUILTIN_TYPE_OBJECT,
+                        class: RouteDto::class,
+                    ),
+                ],
+            ),
+        ],
+    )]
+    #[Groups([ProfileConfig::OUTPUT_FAVORITE_ROUTES])]
+    public array $favoriteRoutes = [];
+
+    #[Groups([ProfileConfig::OUTPUT_FAVORITE_ROUTES])]
+    public int $favoritesRoutesCount = 0;
 }

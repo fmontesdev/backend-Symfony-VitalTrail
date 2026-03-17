@@ -54,6 +54,19 @@ class FavoriteRepositoryImpl extends ServiceEntityRepository implements Favorite
 
     public function countByRoute(Route $route): int
     {
-    return $this->count(['route' => $route,]);
+        return $this->count(['route' => $route]);
+    }
+
+    public function findByUser(User $user): array
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT r
+                 FROM App\Routes\Domain\Entity\Route r
+                 INNER JOIN App\Routes\Domain\Entity\Favorite f WITH f.route = r
+                 WHERE f.user = :user'
+            )
+            ->setParameter('user', $user)
+            ->getResult();
     }
 }

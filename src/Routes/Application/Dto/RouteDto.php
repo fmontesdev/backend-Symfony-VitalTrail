@@ -212,7 +212,6 @@ final class RouteDto
 
     #[Groups([
         RouteConfig::OUTPUT,
-        RouteConfig::OUTPUT_LIST,
     ])]
     public array|null $comments = null;
 

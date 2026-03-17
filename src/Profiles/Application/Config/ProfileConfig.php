@@ -8,4 +8,5 @@ final class ProfileConfig
 {
     public const OUTPUT = 'ProfileOutput';
     public const OUTPUT_LIST = 'ProfileListOutput';
+    public const OUTPUT_FAVORITE_ROUTES = 'profile:output:favorite_routes';
 }

@@ -13,4 +13,7 @@ interface FavoriteRepository
     public function add(Route $route, User $user): void;
     public function remove(Route $route, User $user): void;
     public function countByRoute(Route $route): int;
+
+    /** @return Route[] */
+    public function findByUser(User $user): array;
 }
