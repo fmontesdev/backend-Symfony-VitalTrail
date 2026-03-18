@@ -39,6 +39,7 @@ final class SessionCreateProcessor implements ProcessorInterface
 
         $result = new SessionResource();
         $result->session = $this->service->handle($command);
+        $result->id = $result->session->idSession;
 
         return $result;
     }

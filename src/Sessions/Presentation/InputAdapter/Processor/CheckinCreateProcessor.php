@@ -41,6 +41,7 @@ final class CheckinCreateProcessor implements ProcessorInterface
 
         $result = new SessionResource();
         $result->checkin = $this->service->handle($command);
+        $result->id = $idSession;
 
         return $result;
     }

@@ -150,7 +150,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                     WellbeingCheckinConfig::OUTPUT,
                 ],
             ],
-            read: false,
             openapi: new Operation(
                 summary: '',
                 description: '',
@@ -173,7 +172,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                     WellbeingCheckinConfig::OUTPUT_LIST,
                 ],
             ],
-            read: false,
             openapi: new Operation(
                 summary: '',
                 description: '',
@@ -183,6 +181,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 final class SessionResource
 {
+    #[ApiProperty(identifier: true)]
+    public ?int $id = null;
+
     #[Assert\Valid]
     #[Groups([
         RouteSessionConfig::INPUT,
