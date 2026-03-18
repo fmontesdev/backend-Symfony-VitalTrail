@@ -10,6 +10,8 @@ final class GetFavoriteRoutesQuery implements BaseQuery
 {
     public function __construct(
         public readonly string $username,
+        public readonly int $limit = 10,
+        public readonly int $offset = 0,
     ) {
     }
 }

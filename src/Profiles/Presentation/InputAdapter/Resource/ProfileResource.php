@@ -42,6 +42,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
                         required: true,
                         schema: ['type' => 'string'],
                     ),
+                    new Parameter(
+                        name: 'limit',
+                        in: 'query',
+                        required: false,
+                        schema: ['type' => 'integer', 'default' => 10],
+                    ),
+                    new Parameter(
+                        name: 'offset',
+                        in: 'query',
+                        required: false,
+                        schema: ['type' => 'integer', 'default' => 0],
+                    ),
                 ],
             ),
         ),
