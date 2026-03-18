@@ -33,8 +33,9 @@ security:
             #     check_path: /api/users/login # or, if you have defined a route for your login path, the route name you used
             #     success_handler: lexik_jwt_authentication.handler.authentication_success
             #     failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            jwt: ~ # Usa JWT para proteger esta sección
-            entry_point: jwt
+            custom_authenticators:
+                - App\Security\Infra\Authenticator\PublicAwareJwtAuthenticator
+            entry_point: App\Security\Infra\Authenticator\PublicAwareJwtAuthenticator
             refresh_jwt:
                 check_path: api_refresh_token # or, you may use the `api_refresh_token` route name
                 # or if you have more than one user provider
