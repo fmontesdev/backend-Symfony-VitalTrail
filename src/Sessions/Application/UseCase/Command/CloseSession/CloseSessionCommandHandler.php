@@ -6,6 +6,7 @@ namespace App\Sessions\Application\UseCase\Command\CloseSession;
 
 use App\Security\Domain\Exception\NotAuthorizedResourceException;
 use App\Sessions\Application\Dto\RouteSessionDto;
+use App\Sessions\Application\Exception\SessionAlreadyClosedException;
 use App\Sessions\Application\Service\RouteSessionService;
 use App\Sessions\Domain\OutputPort\RouteSessionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -23,8 +24,12 @@ class CloseSessionCommandHandler
     {
         $session = $this->routeSessionService->findSessionSafe($command->idSession);
 
-        if (!$this->routeSessionService->isAuthorized($session)) {
+        if (!$this->routeSessionService->isAdminOrOwner($session)) {
             throw new NotAuthorizedResourceException();
+        }
+
+        if ($session->getEndAt() !== null) {
+            throw new SessionAlreadyClosedException($command->idSession);
         }
 
         $session->setEndAt($command->endAt);

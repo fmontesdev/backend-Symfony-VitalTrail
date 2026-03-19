@@ -23,7 +23,7 @@ final class GetCheckinQueryHandler
     {
         $session = $this->routeSessionService->findSessionSafe($query->idSession);
 
-        if (!$this->routeSessionService->isAuthorized($session)) {
+        if (!$this->routeSessionService->isAdminOrOwner($session)) {
             throw new NotAuthorizedResourceException();
         }
 

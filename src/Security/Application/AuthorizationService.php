@@ -18,4 +18,13 @@ class AuthorizationService
         $currentUser = $this->securityContext->getAuthenticatedUser();
         return $currentUser->getIdUser() !== $entity->getUser()->getIdUser() ? false : true;
     }
+
+    public function isAdminOrOwner(object $entity): bool
+    {
+        if ($this->securityContext->isAdmin()) {
+            return true;
+        }
+
+        return $this->isOwner($entity);
+    }
 } 

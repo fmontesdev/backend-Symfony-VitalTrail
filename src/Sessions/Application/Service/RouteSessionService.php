@@ -42,6 +42,11 @@ final class RouteSessionService
         return $this->authorizationService->isOwner($session);
     }
 
+    public function isAdminOrOwner(RouteSession $session): bool
+    {
+        return $this->authorizationService->isAdminOrOwner($session);
+    }
+
     public function toDto(RouteSession $session): RouteSessionDto
     {
         return $this->routeSessionMapper->mapEntityToDto($session);

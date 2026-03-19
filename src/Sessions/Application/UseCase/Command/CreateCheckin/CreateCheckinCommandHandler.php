@@ -8,6 +8,7 @@ use App\Security\Domain\Exception\NotAuthorizedResourceException;
 use App\Sessions\Application\Dto\WellbeingCheckinDto;
 use App\Sessions\Application\Exception\CheckinAlreadyExistsException;
 use App\Sessions\Application\Exception\InvalidCheckinValueException;
+use App\Sessions\Application\Exception\SessionNotClosedException;
 use App\Sessions\Application\Service\RouteSessionService;
 use App\Sessions\Application\Service\WellbeingCheckinService;
 use App\Sessions\Domain\Entity\WellbeingCheckin;
@@ -30,6 +31,10 @@ final class CreateCheckinCommandHandler
 
         if (!$this->routeSessionService->isAuthorized($session)) {
             throw new NotAuthorizedResourceException();
+        }
+
+        if ($session->getEndAt() === null) {
+            throw new SessionNotClosedException($command->idSession);
         }
 
         $existing = $this->wellbeingCheckinRepository->findBySession($command->idSession);

@@ -22,7 +22,7 @@ final class DeleteSessionCommandHandler
     {
         $session = $this->routeSessionService->findSessionSafe($command->idSession);
 
-        if (!$this->routeSessionService->isAuthorized($session)) {
+        if (!$this->routeSessionService->isAdminOrOwner($session)) {
             throw new NotAuthorizedResourceException();
         }
 
