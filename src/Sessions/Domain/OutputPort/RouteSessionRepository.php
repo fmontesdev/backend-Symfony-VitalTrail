@@ -11,6 +11,8 @@ interface RouteSessionRepository
 {
     public function findById(int $idSession): ?RouteSession;
     public function findByUser(Uuid $idUser): array;
+    public function findClosedByUser(Uuid $idUser, int $limit, int $offset): array;
+    public function countClosedByUser(Uuid $idUser): int;
     public function findByRoute(int $idRoute): array;
     public function findActiveByUser(Uuid $idUser): ?RouteSession;
     public function save(RouteSession $entity): void;

@@ -40,6 +40,30 @@ final class RouteSessionRepositoryImpl extends ServiceEntityRepository implement
             ->getResult();
     }
 
+    public function findClosedByUser(Uuid $idUser, int $limit, int $offset): array
+    {
+        return $this->createQueryBuilder('rs')
+            ->where('rs.user = :idUser')
+            ->andWhere('rs.endAt IS NOT NULL')
+            ->setParameter('idUser', $idUser)
+            ->orderBy('rs.startAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countClosedByUser(Uuid $idUser): int
+    {
+        return (int) $this->createQueryBuilder('rs')
+            ->select('COUNT(rs)')
+            ->where('rs.user = :idUser')
+            ->andWhere('rs.endAt IS NOT NULL')
+            ->setParameter('idUser', $idUser)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function findByRoute(int $idRoute): array
     {
         return $this->createQueryBuilder('rs')

@@ -28,8 +28,13 @@ final class SessionsProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): SessionResource
     {
+        $limit = intval($context['filters']['limit'] ?? 10);
+        $offset = intval($context['filters']['offset'] ?? 0);
+
         $result = new SessionResource();
-        $result->sessions = $this->service->handle(new GetSessionsByUserQuery());
+        $data = $this->service->handle(new GetSessionsByUserQuery($limit, $offset));
+        $result->sessions = $data['sessions'];
+        $result->sessionsCount = $data['count'];
 
         return $result;
     }

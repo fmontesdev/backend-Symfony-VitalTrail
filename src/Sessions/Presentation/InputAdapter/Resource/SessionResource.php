@@ -83,6 +83,20 @@ use Symfony\Component\Validator\Constraints as Assert;
             openapi: new Operation(
                 summary: '',
                 description: '',
+                parameters: [
+                    new Parameter(
+                        name: 'limit',
+                        in: 'query',
+                        required: false,
+                        schema: ['type' => 'integer'],
+                    ),
+                    new Parameter(
+                        name: 'offset',
+                        in: 'query',
+                        required: false,
+                        schema: ['type' => 'integer'],
+                    ),
+                ],
             ),
         ),
         new Post(
@@ -264,6 +278,9 @@ final class SessionResource
         RouteSessionConfig::OUTPUT_LIST,
     ])]
     public array $sessions = [];
+
+    #[Groups([RouteSessionConfig::OUTPUT_LIST])]
+    public int $sessionsCount = 0;
 
     #[Assert\Valid]
     #[Groups([

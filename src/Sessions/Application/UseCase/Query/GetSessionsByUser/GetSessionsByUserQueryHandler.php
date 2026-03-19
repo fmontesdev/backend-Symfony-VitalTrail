@@ -12,7 +12,7 @@ use App\Sessions\Domain\OutputPort\RouteSessionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class GetSessionsByUserQueryHandler
+class GetSessionsByUserQueryHandler
 {
     public function __construct(
         private readonly RouteSessionService $routeSessionService,
@@ -21,7 +21,7 @@ final class GetSessionsByUserQueryHandler
     }
 
     /**
-     * @return RouteSessionDto[]
+     * @return array{sessions: RouteSessionDto[], count: int}
      */
     public function __invoke(GetSessionsByUserQuery $query): array
     {
@@ -30,11 +30,18 @@ final class GetSessionsByUserQueryHandler
             throw new UserIsNotAuthenticatedException();
         }
 
-        $sessions = $this->routeSessionRepository->findByUser($user->getIdUser());
+        $userId = $user->getIdUser();
+        $count = $this->routeSessionRepository->countClosedByUser($userId);
+        $sessions = $count > 0
+            ? $this->routeSessionRepository->findClosedByUser($userId, $query->limit, $query->offset)
+            : [];
 
-        return array_map(
-            fn (RouteSession $session) => $this->routeSessionService->toDto($session),
-            $sessions,
-        );
+        return [
+            'sessions' => array_map(
+                fn (RouteSession $session) => $this->routeSessionService->toDto($session),
+                $sessions,
+            ),
+            'count' => $count,
+        ];
     }
 }
