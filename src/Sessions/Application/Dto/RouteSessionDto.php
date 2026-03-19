@@ -25,6 +25,12 @@ final class RouteSessionDto
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?string $slug = null;
 
+    #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
+    public ?string $title = null;
+
+    #[Groups([RouteSessionConfig::INPUT_CLOSE, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
+    public ?int $distance = null;
+
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
     #[Groups([RouteSessionConfig::INPUT, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?DateTimeInterface $startAt = null;

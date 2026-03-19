@@ -34,6 +34,9 @@ class RouteSession
     #[ORM\Column(name: 'end_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endAt = null;
 
+    #[ORM\Column(name: 'distance', type: Types::INTEGER, nullable: true)]
+    private ?int $distance = null;
+
     #[ORM\Column(name: 'create_at', type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeInterface $createAt = null;
 
@@ -117,6 +120,17 @@ class RouteSession
     public function setWellbeingCheckin(?WellbeingCheckin $wellbeingCheckin): self
     {
         $this->wellbeingCheckin = $wellbeingCheckin;
+        return $this;
+    }
+
+    public function getDistance(): ?int
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?int $distance): self
+    {
+        $this->distance = $distance;
         return $this;
     }
 }
