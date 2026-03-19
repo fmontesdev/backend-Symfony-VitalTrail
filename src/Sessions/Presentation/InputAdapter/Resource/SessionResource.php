@@ -12,6 +12,7 @@ use App\Sessions\Presentation\InputAdapter\Processor\CheckinCreateProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionCloseProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionCreateProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionDeleteProcessor;
+use App\Sessions\Presentation\InputAdapter\Provider\ActiveSessionProvider;
 use App\Sessions\Presentation\InputAdapter\Provider\CheckinProvider;
 use App\Sessions\Presentation\InputAdapter\Provider\CheckinsProvider;
 use App\Sessions\Presentation\InputAdapter\Provider\SessionProvider;
@@ -31,6 +32,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
+        new Get(
+            name: 'session_active',
+            uriTemplate: '/sessions/active',
+            provider: ActiveSessionProvider::class,
+            normalizationContext: [
+                'groups' => [
+                    RouteSessionConfig::OUTPUT,
+                ],
+                'skip_null_values' => false,
+            ],
+            openapi: new Operation(
+                summary: '',
+                description: '',
+            ),
+        ),
         new Get(
             name: 'session_get',
             uriTemplate: '/sessions/{id}',
