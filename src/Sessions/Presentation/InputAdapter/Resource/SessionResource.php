@@ -77,6 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'groups' => [
                     RouteSessionConfig::OUTPUT_LIST,
+                    WellbeingCheckinConfig::OUTPUT,
                 ],
                 'skip_null_values' => false,
             ],

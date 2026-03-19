@@ -9,6 +9,11 @@ use App\Sessions\Domain\Entity\RouteSession;
 
 final class RouteSessionMapper
 {
+    public function __construct(
+        private readonly WellbeingCheckinMapper $wellbeingCheckinMapper,
+    ) {
+    }
+
     public function mapEntityToDto(RouteSession $entity): RouteSessionDto
     {
         $dto = new RouteSessionDto();
@@ -21,6 +26,12 @@ final class RouteSessionMapper
         $dto->startAt = $entity->getStartAt();
         $dto->endAt = $entity->getEndAt();
         $dto->createdAt = $entity->getCreateAt();
+
+        $checkin = $entity->getWellbeingCheckin();
+        $dto->checkin = $checkin !== null
+            ? $this->wellbeingCheckinMapper->mapEntityToDto($checkin)
+            : null;
+
         return $dto;
     }
 
