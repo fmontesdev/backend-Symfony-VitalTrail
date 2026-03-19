@@ -17,14 +17,14 @@ final class RouteSessionDto
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?int $idSession = null;
 
-    #[Groups([RouteSessionConfig::INPUT])]
+    #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
+    public mixed $idUser = null;
+
+    #[Groups([RouteSessionConfig::INPUT, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?int $idRoute = null;
 
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
-    public mixed $user = null;
-
-    #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
-    public mixed $route = null;
+    public ?string $slug = null;
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
     #[Groups([RouteSessionConfig::INPUT, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
@@ -37,5 +37,5 @@ final class RouteSessionDto
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
-    public ?DateTimeInterface $createAt = null;
+    public ?DateTimeInterface $createdAt = null;
 }

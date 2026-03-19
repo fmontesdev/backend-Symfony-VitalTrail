@@ -13,11 +13,12 @@ final class RouteSessionMapper
     {
         $dto = new RouteSessionDto();
         $dto->idSession = $entity->getIdSession();
-        $dto->user = $entity->getUser()?->getIdUser();
-        $dto->route = $entity->getRoute()?->getIdRoute();
+        $dto->idUser = $entity->getUser()?->getIdUser();
+        $dto->idRoute = $entity->getRoute()?->getIdRoute();
+        $dto->slug = $entity->getRoute()?->getSlug();
         $dto->startAt = $entity->getStartAt();
         $dto->endAt = $entity->getEndAt();
-        $dto->createAt = $entity->getCreateAt();
+        $dto->createdAt = $entity->getCreateAt();
         return $dto;
     }
 
