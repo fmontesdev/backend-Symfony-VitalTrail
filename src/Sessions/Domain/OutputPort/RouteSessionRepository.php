@@ -12,6 +12,7 @@ interface RouteSessionRepository
     public function findById(int $idSession): ?RouteSession;
     public function findByUser(Uuid $idUser): array;
     public function findByRoute(int $idRoute): array;
+    public function findActiveByUser(Uuid $idUser): ?RouteSession;
     public function save(RouteSession $entity): void;
     public function remove(RouteSession $entity): void;
 }

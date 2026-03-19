@@ -8,6 +8,7 @@ use App\Routes\Application\Exception\RouteNotFoundException;
 use App\Routes\Domain\OutputPort\RouteRepository;
 use App\Security\Domain\Exception\UserIsNotAuthenticatedException;
 use App\Sessions\Application\Dto\RouteSessionDto;
+use App\Sessions\Application\Exception\SessionActiveAlreadyExistsException;
 use App\Sessions\Application\Service\RouteSessionService;
 use App\Sessions\Domain\Entity\RouteSession;
 use App\Sessions\Domain\OutputPort\RouteSessionRepository;
@@ -28,6 +29,11 @@ final class CreateSessionCommandHandler
         $user = $this->routeSessionService->getContextUser();
         if ($user === null) {
             throw new UserIsNotAuthenticatedException();
+        }
+
+        $activeSession = $this->routeSessionRepository->findActiveByUser($user->getIdUser());
+        if ($activeSession !== null) {
+            throw new SessionActiveAlreadyExistsException();
         }
 
         $route = $this->routeRepository->findById($command->idRoute);

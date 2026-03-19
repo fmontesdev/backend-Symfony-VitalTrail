@@ -50,6 +50,17 @@ final class RouteSessionRepositoryImpl extends ServiceEntityRepository implement
             ->getResult();
     }
 
+    public function findActiveByUser(Uuid $idUser): ?RouteSession
+    {
+        return $this->createQueryBuilder('rs')
+            ->where('rs.user = :idUser')
+            ->andWhere('rs.endAt IS NULL')
+            ->setParameter('idUser', $idUser)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function save(RouteSession $entity): void
     {
         $this->getEntityManager()->persist($entity);
