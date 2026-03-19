@@ -9,6 +9,7 @@ use App\Sessions\Application\Config\WellbeingCheckinConfig;
 use App\Sessions\Application\Dto\RouteSessionDto;
 use App\Sessions\Application\Dto\WellbeingCheckinDto;
 use App\Sessions\Presentation\InputAdapter\Processor\CheckinCreateProcessor;
+use App\Sessions\Presentation\InputAdapter\Processor\SessionCloseProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionCreateProcessor;
 use App\Sessions\Presentation\InputAdapter\Processor\SessionDeleteProcessor;
 use App\Sessions\Presentation\InputAdapter\Provider\CheckinProvider;
@@ -20,6 +21,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\Parameter;
@@ -37,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'groups' => [
                     RouteSessionConfig::OUTPUT,
                 ],
+                'skip_null_values' => false,
             ],
             openapi: new Operation(
                 summary: '',
@@ -59,6 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'groups' => [
                     RouteSessionConfig::OUTPUT_LIST,
                 ],
+                'skip_null_values' => false,
             ],
             openapi: new Operation(
                 summary: '',
@@ -74,6 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'groups' => [
                     RouteSessionConfig::OUTPUT,
                 ],
+                'skip_null_values' => false,
             ],
             denormalizationContext: [
                 'groups' => [
@@ -95,6 +100,40 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/sessions/{id}',
             processor: SessionDeleteProcessor::class,
             read: false,
+            openapi: new Operation(
+                summary: '',
+                description: '',
+                parameters: [
+                    new Parameter(
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: ['type' => 'integer'],
+                    ),
+                ],
+            ),
+        ),
+        new Patch(
+            name: 'session_close',
+            uriTemplate: '/sessions/{id}',
+            read: false,
+            inputFormats: ['json' => ['application/json', 'application/merge-patch+json']],
+            processor: SessionCloseProcessor::class,
+            normalizationContext: [
+                'groups' => [
+                    RouteSessionConfig::OUTPUT,
+                ],
+            ],
+            denormalizationContext: [
+                'groups' => [
+                    RouteSessionConfig::INPUT_CLOSE,
+                ],
+            ],
+            validationContext: [
+                'groups' => [
+                    RouteSessionConfig::VALID_CLOSE,
+                ],
+            ],
             openapi: new Operation(
                 summary: '',
                 description: '',
@@ -187,6 +226,7 @@ final class SessionResource
     #[Assert\Valid]
     #[Groups([
         RouteSessionConfig::INPUT,
+        RouteSessionConfig::INPUT_CLOSE,
         RouteSessionConfig::OUTPUT,
     ])]
     public ?RouteSessionDto $session = null;

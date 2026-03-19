@@ -9,6 +9,7 @@ use App\Shared\Application\Config\DateTimeConfig;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeInterface;
 
 final class RouteSessionDto
@@ -29,8 +30,9 @@ final class RouteSessionDto
     #[Groups([RouteSessionConfig::INPUT, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?DateTimeInterface $startAt = null;
 
+    #[Assert\NotNull(groups: [RouteSessionConfig::VALID_CLOSE])]
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
-    #[Groups([RouteSessionConfig::INPUT, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
+    #[Groups([RouteSessionConfig::INPUT, RouteSessionConfig::INPUT_CLOSE, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?DateTimeInterface $endAt = null;
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
