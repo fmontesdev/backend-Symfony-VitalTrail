@@ -18,7 +18,7 @@ final class WellbeingCheckinMapper
         $dto->stress = $entity->getStress();
         $dto->mood = $entity->getMood();
         $dto->notes = $entity->getNotes();
-        $dto->createAt = $entity->getCreateAt();
+        $dto->createdAt = $entity->getCreateAt();
         return $dto;
     }
 

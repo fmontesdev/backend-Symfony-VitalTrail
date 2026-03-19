@@ -22,7 +22,6 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\Parameter;
@@ -129,26 +128,17 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ],
             ),
         ),
-        new Patch(
+        new Post(
             name: 'session_close',
-            uriTemplate: '/sessions/{id}',
+            uriTemplate: '/sessions/{id}/end',
             read: false,
-            inputFormats: ['json' => ['application/json', 'application/merge-patch+json']],
+            deserialize: false,
             processor: SessionCloseProcessor::class,
             normalizationContext: [
                 'groups' => [
                     RouteSessionConfig::OUTPUT,
                 ],
-            ],
-            denormalizationContext: [
-                'groups' => [
-                    RouteSessionConfig::INPUT_CLOSE,
-                ],
-            ],
-            validationContext: [
-                'groups' => [
-                    RouteSessionConfig::VALID_CLOSE,
-                ],
+                'skip_null_values' => false,
             ],
             openapi: new Operation(
                 summary: '',
@@ -242,7 +232,6 @@ final class SessionResource
     #[Assert\Valid]
     #[Groups([
         RouteSessionConfig::INPUT,
-        RouteSessionConfig::INPUT_CLOSE,
         RouteSessionConfig::OUTPUT,
     ])]
     public ?RouteSessionDto $session = null;

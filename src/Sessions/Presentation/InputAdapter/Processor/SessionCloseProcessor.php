@@ -27,7 +27,7 @@ final class SessionCloseProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): SessionResource
     {
         $idSession = (int) $uriVariables['id'];
-        $endAt = DateTimeImmutable::createFromInterface($data->session->endAt);
+        $endAt = new DateTimeImmutable();
 
         $command = new CloseSessionCommand($idSession, $endAt);
 

@@ -33,5 +33,5 @@ final class WellbeingCheckinDto
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeConfig::FORMAT])]
     #[Groups([WellbeingCheckinConfig::OUTPUT, WellbeingCheckinConfig::OUTPUT_LIST])]
-    public ?DateTimeInterface $createAt = null;
+    public ?DateTimeInterface $createdAt = null;
 }
