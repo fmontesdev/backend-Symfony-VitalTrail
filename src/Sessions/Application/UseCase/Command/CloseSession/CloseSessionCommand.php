@@ -12,6 +12,7 @@ final class CloseSessionCommand implements BaseCommand
     public function __construct(
         public readonly int $idSession,
         public readonly DateTimeImmutable $endAt,
+        public readonly ?int $distance = null,
     ) {
     }
 }

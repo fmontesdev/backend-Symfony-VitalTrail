@@ -28,8 +28,9 @@ final class SessionCloseProcessor implements ProcessorInterface
     {
         $idSession = (int) $uriVariables['id'];
         $endAt = new DateTimeImmutable();
+        $distance = $data->session?->distance;
 
-        $command = new CloseSessionCommand($idSession, $endAt);
+        $command = new CloseSessionCommand($idSession, $endAt, $distance);
 
         $result = new SessionResource();
         $result->session = $this->service->handle($command);

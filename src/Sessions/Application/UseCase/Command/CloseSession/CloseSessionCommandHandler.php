@@ -33,6 +33,7 @@ class CloseSessionCommandHandler
         }
 
         $session->setEndAt($command->endAt);
+        $session->setDistance($command->distance);
         $this->routeSessionRepository->save($session);
 
         return $this->routeSessionService->toDto($session);
