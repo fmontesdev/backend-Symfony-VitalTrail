@@ -7,8 +7,8 @@ namespace App\Routes\Presentation\InputAdapter\Resource;
 use App\Routes\Application\Config\ImageRouteConfig;
 use App\Routes\Application\Dto\ImageRouteDto;
 use App\Routes\Presentation\InputAdapter\Provider\ImagesByRouteProvider;
-use App\Routes\Presentation\InputAdapter\Processor\ImageRouteAddProcessor;
 use App\Routes\Presentation\InputAdapter\Processor\ImageRouteDeleteProcessor;
+use App\Routes\Presentation\InputAdapter\Processor\ImageRouteUploadProcessor;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -44,39 +44,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ],
             ),
         ),
-        new Post(
-            name: 'image_route_add',
-            uriTemplate: '/routes/{idRoute}/addImg',
-            read: false,
-            processor: ImageRouteAddProcessor::class,
-            normalizationContext: [
-                'groups' => [
-                    ImageRouteConfig::OUTPUT_LIST,
-                ],
-            ],
-            denormalizationContext: [
-                'groups' => [
-                    ImageRouteConfig::INPUT,
-                ],
-            ],
-            validationContext: [
-                'groups' => [
-                    ImageRouteConfig::VALID,
-                ],
-            ],
-            openapi: new Operation(
-                summary: '',
-                description: '',
-                parameters: [
-                    new Parameter(
-                        name: 'idRoute',
-                        in: 'path',
-                        required: true,
-                        schema: ['type' => 'integer'],
-                    ),
-                ],
-            ),
-        ),
         new Delete(
             name: 'image_route_delete',
             uriTemplate: '/image_route/{idImg}',
@@ -94,6 +61,15 @@ use Symfony\Component\Validator\Constraints as Assert;
                     ),
                 ],
             ),
+        ),
+        new Post(
+            name: 'image_route_upload',
+            uriTemplate: '/routes/{idRoute}/images/upload',
+            read: false,
+            deserialize: false,
+            processor: ImageRouteUploadProcessor::class,
+            normalizationContext: ['groups' => [ImageRouteConfig::OUTPUT_LIST]],
+            security: "is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN')",
         ),
     ],
 )]

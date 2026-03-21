@@ -6,8 +6,8 @@ namespace App\Auth\Presentation\InputAdapter\Resource;
 
 use App\Auth\Application\Config\UserConfig;
 use App\Auth\Application\Dto\UserDto;
-use App\Auth\Presentation\InputAdapter\Processor\UserRegisterProcessor;
 use App\Auth\Presentation\InputAdapter\Processor\UserLoginProcessor;
+use App\Auth\Presentation\InputAdapter\Processor\UserRegisterProcessor;
 use App\Auth\Presentation\InputAdapter\Processor\UserUpdateProcessor;
 use App\Auth\Presentation\InputAdapter\Provider\UserCurrentProvider;
 use ApiPlatform\Metadata\ApiResource;

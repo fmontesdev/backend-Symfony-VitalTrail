@@ -10,11 +10,13 @@ use App\Profiles\Presentation\InputAdapter\Provider\FavoriteRoutesProvider;
 use App\Profiles\Presentation\InputAdapter\Provider\ProfilesProvider;
 use App\Profiles\Presentation\InputAdapter\Provider\ProfileProvider;
 use App\Profiles\Presentation\InputAdapter\Processor\FollowProcessor;
+use App\Profiles\Presentation\InputAdapter\Processor\ProfileAvatarUploadProcessor;
 use App\Routes\Application\Config\RouteConfig;
 use App\Routes\Application\Dto\RouteDto;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\OpenApi\Model\Operation;
@@ -147,6 +149,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
                 ],
             ],
             status: 200,
+            openapi: new Operation(
+                summary: '',
+                description: '',
+                parameters: [
+                    new Parameter(
+                        name: 'username',
+                        in: 'path',
+                        required: true,
+                        schema: ['type' => 'string'],
+                    ),
+                ],
+            ),
+        ),
+        new Post(
+            name: 'profile_avatar_upload',
+            uriTemplate: '/profiles/{username}/avatar',
+            read: false,
+            deserialize: false,
+            status: 200,
+            processor: ProfileAvatarUploadProcessor::class,
+            normalizationContext: ['groups' => [ProfileConfig::OUTPUT]],
+            security: "is_granted('ROLE_CLIENT') or is_granted('ROLE_ADMIN')",
             openapi: new Operation(
                 summary: '',
                 description: '',

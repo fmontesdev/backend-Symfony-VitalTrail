@@ -30,6 +30,9 @@ WORKDIR /var/www/symfony_vitaltrail
 COPY composer.json composer.lock ./
 RUN composer install --prefer-dist --no-scripts --no-interaction --optimize-autoloader
 
+# Copiar configuración PHP personalizada (uploads, etc.)
+COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
+
 # Copiar el resto de la aplicación
 COPY . ./
 
