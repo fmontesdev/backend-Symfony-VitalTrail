@@ -22,6 +22,7 @@ final class RouteSessionMapper
         $dto->idRoute = $entity->getRoute()?->getIdRoute();
         $dto->slug = $entity->getRoute()?->getSlug();
         $dto->title = $entity->getRoute()?->getTitle();
+        $dto->category = $entity->getRoute()?->getCategory()?->getTitle();
         $dto->distance = $entity->getDistance();
         $dto->startAt = $entity->getStartAt();
         $dto->endAt = $entity->getEndAt();

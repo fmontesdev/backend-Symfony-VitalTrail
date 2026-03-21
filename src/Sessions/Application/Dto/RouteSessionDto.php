@@ -28,6 +28,9 @@ final class RouteSessionDto
     #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?string $title = null;
 
+    #[Groups([RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
+    public ?string $category = null;
+
     #[Groups([RouteSessionConfig::INPUT_CLOSE, RouteSessionConfig::OUTPUT, RouteSessionConfig::OUTPUT_LIST])]
     public ?int $distance = null;
 
