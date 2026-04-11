@@ -38,7 +38,8 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
         ?string $author = null
     ): QueryBuilder {
         $queryBuilder = $this->createQueryBuilder('r')
-            ->select('r');
+            ->select('r')
+            ->andWhere('r.isActive = true');
         if ($category !== null && trim($category) !== '') {
             $queryBuilder
                 ->join('r.category', 'c', Join::WITH, 'LOWER(c.title) LIKE LOWER(:category)')
@@ -84,7 +85,12 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
 
     public function findBySlug(string $slug): ?Route
     {
-        return $this->findOneBySlug($slug);
+        return $this->createQueryBuilder('r')
+            ->where('r.slug = :slug')
+            ->andWhere('r.isActive = true')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -164,7 +170,8 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
 
     public function remove(Route $entity): void
     {
-        $this->getEntityManager()->remove($entity);
+        $entity->setIsActive(false);
+        $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
 
@@ -172,6 +179,7 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
     {
         return (int) $this->createQueryBuilder('r')
             ->select('COALESCE(SUM(r.distance), 0)')
+            ->where('r.isActive = true')
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -183,6 +191,7 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
         return (int) $this->createQueryBuilder('r')
             ->select('COUNT(r.idRoute)')
             ->where('r.createdAt >= :start')
+            ->andWhere('r.isActive = true')
             ->setParameter('start', $start)
             ->getQuery()
             ->getSingleScalarResult();
@@ -199,6 +208,7 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
                     COUNT(r.id_route) AS new_routes
              FROM routes r
              WHERE r.create_at >= DATE_TRUNC('month', NOW()) - (:months || ' months')::INTERVAL
+               AND r.is_active = true
              GROUP BY month
              ORDER BY month DESC",
             ['months' => $months],

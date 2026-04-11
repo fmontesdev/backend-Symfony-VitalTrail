@@ -72,6 +72,9 @@ class Route
     #[ORM\Column(length: RouteConfig::SLUG_LENGTH, unique: true)]
     private ?string $slug = null;
 
+    #[ORM\Column(name: 'is_active', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $isActive = true;
+
     #[ORM\OneToMany(mappedBy: 'route', targetEntity: ImageRoute::class, fetch: 'LAZY')]
     private Collection $images;
 
@@ -286,6 +289,17 @@ class Route
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+        return $this;
+    }
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
         return $this;
     }
 

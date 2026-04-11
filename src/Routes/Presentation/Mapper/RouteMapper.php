@@ -72,7 +72,7 @@ class RouteMapper
             $result->user = $this->userMapper->mapEntityToDto($entity->getUser());
         }
         if ($response === 'getAllRoute' && $entity->getUser() !== null) {
-            $result->user = $entity->getUser()->getIdUser();
+            $result->user = $this->userMapper->mapEntityToDto($entity->getUser());
         }
         $result->category = $entity->getCategory()->getTitle();
         $result->title = $entity->getTitle();
