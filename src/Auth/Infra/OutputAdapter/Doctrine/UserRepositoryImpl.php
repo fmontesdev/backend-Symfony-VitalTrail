@@ -94,7 +94,7 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
     /**
      * @return User[]
      */
-    public function findPaginatedForAdmin(int $page, int $limit, ?string $search, ?string $role, ?bool $isPremium): array
+    public function findPaginatedForAdmin(int $page, int $limit, ?string $search, ?string $role, ?bool $isPremium, ?bool $isActive): array
     {
         $qb = $this->createQueryBuilder('u')
             ->where('u.isDeleted = false')
@@ -117,10 +117,15 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
                ->setParameter('isPremium', $isPremium);
         }
 
+        if ($isActive !== null) {
+            $qb->andWhere('u.isActive = :isActive')
+               ->setParameter('isActive', $isActive);
+        }
+
         return $qb->getQuery()->getResult();
     }
 
-    public function countForAdmin(?string $search, ?string $role, ?bool $isPremium): int
+    public function countForAdmin(?string $search, ?string $role, ?bool $isPremium, ?bool $isActive): int
     {
         $qb = $this->createQueryBuilder('u')
             ->select('COUNT(u.idUser)')
@@ -139,6 +144,11 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
         if ($isPremium !== null) {
             $qb->andWhere('u.isPremium = :isPremium')
                ->setParameter('isPremium', $isPremium);
+        }
+
+        if ($isActive !== null) {
+            $qb->andWhere('u.isActive = :isActive')
+               ->setParameter('isActive', $isActive);
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult();

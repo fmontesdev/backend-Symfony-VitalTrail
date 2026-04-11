@@ -25,12 +25,14 @@ final readonly class GetAdminUsersQueryHandler
             $query->search,
             $query->role,
             $query->isPremium,
+            $query->isActive,
         );
 
         $total = $this->userRepository->countForAdmin(
             $query->search,
             $query->role,
             $query->isPremium,
+            $query->isActive,
         );
 
         $userDtos = array_map(

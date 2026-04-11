@@ -14,6 +14,7 @@ final readonly class GetAdminUsersQuery implements BaseQuery
         public ?string $search,
         public ?string $role,
         public ?bool $isPremium,
+        public ?bool $isActive,
     ) {
     }
 }

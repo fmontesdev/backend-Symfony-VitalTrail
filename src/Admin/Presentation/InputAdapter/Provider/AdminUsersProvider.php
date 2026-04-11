@@ -43,8 +43,13 @@ final class AdminUsersProvider implements ProviderInterface
             ? filter_var($isPremiumRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
             : null;
 
+        $isActiveRaw = $request?->query->get('isActive');
+        $isActive = $isActiveRaw !== null
+            ? filter_var($isActiveRaw, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
+            : null;
+
         /** @var AdminUsersPageDto $dto */
-        $dto = $this->service->handle(new GetAdminUsersQuery($page, $limit, $search, $role, $isPremium));
+        $dto = $this->service->handle(new GetAdminUsersQuery($page, $limit, $search, $role, $isPremium, $isActive));
 
         return AdminUserMapper::mapPageDtoToResource($dto);
     }
