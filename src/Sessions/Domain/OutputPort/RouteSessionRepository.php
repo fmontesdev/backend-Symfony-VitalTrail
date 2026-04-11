@@ -17,4 +17,7 @@ interface RouteSessionRepository
     public function findActiveByUser(Uuid $idUser): ?RouteSession;
     public function save(RouteSession $entity): void;
     public function remove(RouteSession $entity): void;
+    public function countTotalSessions(): int;
+    public function countSessionsThisMonth(): int;
+    public function sumTotalDistanceMeters(): int;
 }

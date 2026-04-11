@@ -12,4 +12,11 @@ interface UserRepository
     public function findByUsername(string $username): ?User;
     public function save(User $user): void;
     public function countActiveClients(): int;
+    public function countTotalUsers(): int;
+    public function countPremiumUsers(): int;
+    public function countNewUsersThisMonth(): int;
+    /**
+     * @return array<array{month: string, newUsers: int, newPremium: int}>
+     */
+    public function getUsersGrowthByMonth(int $months): array;
 }

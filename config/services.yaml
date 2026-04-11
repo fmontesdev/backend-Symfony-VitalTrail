@@ -41,6 +41,9 @@ services:
         exclude:
             - '../src/Sessions/Domain/Entity/'
 
+    App\Admin\:
+        resource: '../src/Admin'
+
     App\Stats\:
         resource: '../src/Stats'
 

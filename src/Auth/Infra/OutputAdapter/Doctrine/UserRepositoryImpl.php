@@ -53,4 +53,64 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function countTotalUsers(): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.idUser)')
+            ->where('u.isDeleted = false')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countPremiumUsers(): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.idUser)')
+            ->where('u.isPremium = true')
+            ->andWhere('u.isDeleted = false')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countNewUsersThisMonth(): int
+    {
+        $start = new \DateTime('first day of this month midnight');
+
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.idUser)')
+            ->where('u.createdAt >= :start')
+            ->andWhere('u.isDeleted = false')
+            ->setParameter('start', $start)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return array<array{month: string, newUsers: int, newPremium: int}>
+     */
+    public function getUsersGrowthByMonth(int $months): array
+    {
+        $since = new \DateTime('first day of -' . ($months - 1) . ' months midnight');
+
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+            SELECT TO_CHAR(created_at, 'YYYY-MM') AS month,
+                   COUNT(*) AS new_users,
+                   SUM(CASE WHEN is_premium = true THEN 1 ELSE 0 END) AS new_premium
+            FROM users
+            WHERE created_at >= :since
+              AND is_deleted = false
+            GROUP BY TO_CHAR(created_at, 'YYYY-MM')
+            ORDER BY month DESC
+        ";
+
+        $rows = $conn->fetchAllAssociative($sql, ['since' => $since->format('Y-m-d H:i:s')]);
+
+        return array_map(fn(array $row) => [
+            'month'      => $row['month'],
+            'newUsers'   => (int) $row['new_users'],
+            'newPremium' => (int) $row['new_premium'],
+        ], $rows);
+    }
 }

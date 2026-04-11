@@ -64,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'is_premium', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $isPremium = false;
 
+    #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+
     // Relaciones 1:1 con Admin / Client. Relación inversa en "User" (mappedBy) y la relación propietaria en Admin / Client //
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Admin::class, cascade: ['persist', 'remove'], fetch: 'LAZY')]
@@ -81,6 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->idUser = Uuid::v4(); // Genera un UUID al crear la entidad
+        $this->createdAt = new \DateTimeImmutable();
         $this->routes = new ArrayCollection();
         $this->routeSessions = new ArrayCollection();
     }
@@ -229,6 +233,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->isPremium = $isPremium;
         return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 
     public function getAdmin(): ?Admin

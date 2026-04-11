@@ -30,4 +30,9 @@ interface RouteRepository
     public function remove(Route $route): void;
     public function countRoutes(?string $category = null, ?string $location = null, ?string $title = null, ?int $distance = null, ?string $difficulty = null, ?string $typeRoute = null, ?string $author = null): int;
     public function sumAllDistances(): int;
+    public function countNewRoutesThisMonth(): int;
+    /**
+     * @return array<array{month: string, newRoutes: int}>
+     */
+    public function getRoutesGrowthByMonth(int $months): array;
 }

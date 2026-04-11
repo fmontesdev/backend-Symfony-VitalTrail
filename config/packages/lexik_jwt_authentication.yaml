@@ -2,7 +2,7 @@ lexik_jwt_authentication:
     # secret_key: '%env(resolve:ACCESS_JWT_SECRET_KEY)%'
     # public_key: '%env(resolve:ACCESS_JWT_PUBLIC_KEY)%'
     # pass_phrase: '%env(ACCESS_JWT_PASSPHRASE)%'
-    secret_key: '%env(resolve:ACCESS_JWT_SECRET_KEY)%'
+    secret_key: '%env(resolve:ACCESS_TOKEN_SECRET)%'
     encoder:
         signature_algorithm: HS256
     token_ttl: 43200 # Tiempo de vida del access token en segundos (12 horas)

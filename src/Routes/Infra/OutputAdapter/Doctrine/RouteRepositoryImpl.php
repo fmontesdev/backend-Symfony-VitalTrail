@@ -175,4 +175,41 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function countNewRoutesThisMonth(): int
+    {
+        $start = new \DateTime('first day of this month midnight');
+
+        return (int) $this->createQueryBuilder('r')
+            ->select('COUNT(r.idRoute)')
+            ->where('r.createdAt >= :start')
+            ->setParameter('start', $start)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return array<array{month: string, newRoutes: int}>
+     */
+    public function getRoutesGrowthByMonth(int $months): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            "SELECT TO_CHAR(r.create_at, 'YYYY-MM') AS month,
+                    COUNT(r.id_route) AS new_routes
+             FROM routes r
+             WHERE r.create_at >= DATE_TRUNC('month', NOW()) - (:months || ' months')::INTERVAL
+             GROUP BY month
+             ORDER BY month DESC",
+            ['months' => $months],
+        );
+
+        return array_map(
+            static fn(array $row): array => [
+                'month' => (string) $row['month'],
+                'newRoutes' => (int) $row['new_routes'],
+            ],
+            $rows,
+        );
+    }
 }

@@ -15,6 +15,7 @@ api_platform:
             # - '%kernel.project_dir%/src/Suscriptions/Presentation/Resource'
             - '%kernel.project_dir%/src/Sessions/Presentation/InputAdapter/Resource'
             - '%kernel.project_dir%/src/Stats/Presentation/InputAdapter/Resource'
+            - '%kernel.project_dir%/src/Admin/Presentation/InputAdapter/Resource'
     formats:
         json:
             mime_types: ['application/json']

@@ -96,4 +96,33 @@ final class RouteSessionRepositoryImpl extends ServiceEntityRepository implement
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
+
+    public function countTotalSessions(): int
+    {
+        return (int) $this->createQueryBuilder('rs')
+            ->select('COUNT(rs.idSession)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countSessionsThisMonth(): int
+    {
+        $start = new \DateTime('first day of this month midnight');
+
+        return (int) $this->createQueryBuilder('rs')
+            ->select('COUNT(rs.idSession)')
+            ->where('rs.createAt >= :start')
+            ->setParameter('start', $start)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function sumTotalDistanceMeters(): int
+    {
+        return (int) $this->createQueryBuilder('rs')
+            ->select('COALESCE(SUM(rs.distance), 0)')
+            ->where('rs.distance IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
