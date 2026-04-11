@@ -19,4 +19,13 @@ interface UserRepository
      * @return array<array{month: string, newUsers: int, newPremium: int}>
      */
     public function getUsersGrowthByMonth(int $months): array;
+
+    public function findById(string $id): ?User;
+
+    /**
+     * @return User[]
+     */
+    public function findPaginatedForAdmin(int $page, int $limit, ?string $search, ?string $role, ?bool $isPremium): array;
+
+    public function countForAdmin(?string $search, ?string $role, ?bool $isPremium): int;
 }

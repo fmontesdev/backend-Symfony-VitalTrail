@@ -86,6 +86,64 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
             ->getSingleScalarResult();
     }
 
+    public function findById(string $id): ?User
+    {
+        return $this->find($id);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findPaginatedForAdmin(int $page, int $limit, ?string $search, ?string $role, ?bool $isPremium): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.isDeleted = false')
+            ->orderBy('u.createdAt', 'DESC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        if ($search !== null) {
+            $qb->andWhere('u.username LIKE :search OR u.email LIKE :search OR u.name LIKE :search')
+               ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($role !== null) {
+            $qb->andWhere('u.rol = :role')
+               ->setParameter('role', RolUserEnum::from($role));
+        }
+
+        if ($isPremium !== null) {
+            $qb->andWhere('u.isPremium = :isPremium')
+               ->setParameter('isPremium', $isPremium);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function countForAdmin(?string $search, ?string $role, ?bool $isPremium): int
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('COUNT(u.idUser)')
+            ->where('u.isDeleted = false');
+
+        if ($search !== null) {
+            $qb->andWhere('u.username LIKE :search OR u.email LIKE :search OR u.name LIKE :search')
+               ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($role !== null) {
+            $qb->andWhere('u.rol = :role')
+               ->setParameter('role', RolUserEnum::from($role));
+        }
+
+        if ($isPremium !== null) {
+            $qb->andWhere('u.isPremium = :isPremium')
+               ->setParameter('isPremium', $isPremium);
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
     /**
      * @return array<array{month: string, newUsers: int, newPremium: int}>
      */

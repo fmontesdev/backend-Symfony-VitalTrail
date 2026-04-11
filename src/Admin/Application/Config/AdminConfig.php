@@ -8,4 +8,5 @@ final class AdminConfig
 {
     public const STATS_OUTPUT = 'AdminStatsOutput';
     public const GROWTH_OUTPUT = 'AdminGrowthOutput';
+    public const USERS_OUTPUT = 'AdminUsersOutput';
 }
