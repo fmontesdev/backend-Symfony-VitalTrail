@@ -37,6 +37,9 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
         ?string $typeRoute = null,
         ?string $author = null
     ): QueryBuilder {
+        $normalizedLocation = $location !== null ? trim($location) : null;
+        $normalizedTitle = $title !== null ? trim($title) : null;
+
         $queryBuilder = $this->createQueryBuilder('r')
             ->select('r')
             ->andWhere('r.isActive = true');
@@ -45,15 +48,20 @@ class RouteRepositoryImpl extends ServiceEntityRepository implements RouteReposi
                 ->join('r.category', 'c', Join::WITH, 'LOWER(c.title) LIKE LOWER(:category)')
                 ->setParameter('category', trim($category));
         }
-        if ($location !== null && trim($location) !== '') {
+
+        if ($normalizedLocation !== null && '' !== $normalizedLocation && $normalizedTitle !== null && '' !== $normalizedTitle) {
+            $queryBuilder
+                ->andWhere('(LOWER(r.location) LIKE LOWER(:location) OR LOWER(r.title) LIKE LOWER(:title))')
+                ->setParameter('location', '%'.$normalizedLocation.'%')
+                ->setParameter('title', '%'.$normalizedTitle.'%');
+        } elseif ($normalizedLocation !== null && '' !== $normalizedLocation) {
             $queryBuilder
                 ->andWhere('LOWER(r.location) LIKE LOWER(:location)')
-                ->setParameter('location', trim($location));
-        }
-        if ($title !== null && trim($title) !== '') {
+                ->setParameter('location', '%'.$normalizedLocation.'%');
+        } elseif ($normalizedTitle !== null && '' !== $normalizedTitle) {
             $queryBuilder
                 ->andWhere('LOWER(r.title) LIKE LOWER(:title)')
-                ->setParameter('title', '%'.trim($title).'%');
+                ->setParameter('title', '%'.$normalizedTitle.'%');
         }
         if ($distance !== null && $distance > 0) {
             $queryBuilder
