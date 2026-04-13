@@ -87,6 +87,11 @@ security:
 
         - { path: ^/api/stats/home, roles: PUBLIC_ACCESS }
 
+        - { path: ^/api/notifications/me, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
+        - { path: ^/api/notifications/read-all, roles: IS_AUTHENTICATED_FULLY, methods: [PATCH] }
+        - { path: ^/api/notifications/\d+/read, roles: IS_AUTHENTICATED_FULLY, methods: [PATCH] }
+        - { path: ^/api/notifications, roles: ROLE_ADMIN, methods: [POST, DELETE] }
+
         # - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST] }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

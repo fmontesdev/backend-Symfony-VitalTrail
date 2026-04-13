@@ -26,6 +26,7 @@ framework:
             'App\Profiles\Application\UseCase\*': sync
             'App\Sessions\Application\UseCase\*': sync
             'App\Stats\Application\UseCase\*': sync
+            'App\Notifications\Application\UseCase\*': sync
 
 # when@test:
 #    framework:
