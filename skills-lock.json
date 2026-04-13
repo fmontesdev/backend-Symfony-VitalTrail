@@ -26,6 +26,11 @@
       "sourceType": "github",
       "computedHash": "4ddc2c323e14f49b7cb44d61948f42a429a945f76ae5331e0e51dbf5169b782a"
     },
+    "symfony:doctrine-relations": {
+      "source": "makfly/superpowers-symfony",
+      "sourceType": "github",
+      "computedHash": "a8061f85cb4e463a219fa31ccac55c2b39ae2f1a7ff76f4e2d5d7dfe0ca24148"
+    },
     "symfony:ports-and-adapters": {
       "source": "makfly/superpowers-symfony",
       "sourceType": "github",
