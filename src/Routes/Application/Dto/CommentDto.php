@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Routes\Application\Dto;
 
-use App\Auth\Domain\Entity\User;
 use App\Auth\Application\Dto\UserDto;
-use App\Routes\Domain\Entity\Route;
+use App\Auth\Domain\Entity\User;
 use App\Routes\Application\Config\CommentConfig;
 use App\Routes\Application\Config\RatingConfig;
 use App\Routes\Application\Config\RouteConfig;
+use App\Routes\Domain\Entity\Route;
 use App\Shared\Application\Config\DateTimeConfig;
 use ApiPlatform\Metadata\ApiProperty;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Uid\Uuid;
 use DateTimeInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class CommentDto
 {
@@ -49,13 +50,18 @@ final class CommentDto
     #[Groups([
         CommentConfig::OUTPUT,
         CommentConfig::OUTPUT_LIST,
-        CommentConfig::OUTPUT_PROFILE_LIST,
         RatingConfig::OUTPUT,
         RatingConfig::OUTPUT_LIST,
         RouteConfig::OUTPUT,
         RouteConfig::OUTPUT_LIST,
     ])]
     public Route|int|null $route = null;
+
+    #[SerializedName('route')]
+    #[Groups([
+        CommentConfig::OUTPUT_PROFILE_LIST,
+    ])]
+    public ?CommentRouteSummaryDto $routeSummary = null;
 
     #[Assert\NotBlank(
         groups: [
