@@ -28,4 +28,14 @@ interface UserRepository
     public function findPaginatedForAdmin(int $page, int $limit, ?string $search, ?string $role, ?bool $isPremium, ?bool $isActive): array;
 
     public function countForAdmin(?string $search, ?string $role, ?bool $isPremium, ?bool $isActive): int;
+
+    /**
+     * @return User[]
+     */
+    public function findByRole(string $role): array;
+
+    /**
+     * @return User[]
+     */
+    public function findAllActive(): array;
 }

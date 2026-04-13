@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Notifications\Domain\Entity;
 
-use App\Notifications\Domain\Repository\NotificationRepository;
+use App\Notifications\Infra\OutputAdapter\Doctrine\NotificationRepositoryImpl;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: NotificationRepository::class)]
+#[ORM\Entity(repositoryClass: NotificationRepositoryImpl::class)]
 #[ORM\Table(name: 'notifications')]
+#[ORM\HasLifecycleCallbacks]
 class Notification
 {
     #[ORM\Id]
@@ -23,12 +24,68 @@ class Notification
     #[ORM\Column(length: 255)]
     private string $description;
 
-    #[ORM\Column(name: 'create_at', type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeInterface $createdAt = null;
+    #[ORM\Column(length: 50)]
+    private string $type;
 
-    #[ORM\PrePersist] // Se ejecuta antes de que la entidad se guarde por primera vez
+    #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct(string $title, string $description, string $type)
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->type = $type;
+    }
+
+    #[ORM\PrePersist]
     public function setTimestampsOnCreate(): void
     {
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getIdNotification(): ?int
+    {
+        return $this->idNotification;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

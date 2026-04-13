@@ -155,6 +155,32 @@ class UserRepositoryImpl extends ServiceEntityRepository implements UserReposito
     }
 
     /**
+     * @return User[]
+     */
+    public function findByRole(string $role): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.rol = :role')
+            ->andWhere('u.isDeleted = false')
+            ->andWhere('u.isActive = true')
+            ->setParameter('role', RolUserEnum::from($role))
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findAllActive(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.isDeleted = false')
+            ->andWhere('u.isActive = true')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @return array<array{month: string, newUsers: int, newPremium: int}>
      */
     public function getUsersGrowthByMonth(int $months): array
