@@ -13,10 +13,12 @@ use App\Auth\Application\ServiceImpl\AdminServiceImpl;
 use App\Auth\Application\ServiceImpl\ClientServiceImpl;
 use App\Auth\Application\Exception\EmailIsNotValidException;
 use App\Auth\Application\Exception\PasswordIsNotValidException;
+use App\Notifications\Application\UseCase\Command\CreateNotification\CreateNotificationCommand;
 use App\Security\Application\SecurityContext;
+use App\Security\Domain\Exception\UserIsNotAuthenticatedException;
+use App\Shared\Application\InputPort\ApplicationService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Security\Infra\Jwt\JwtTokenGenerator;
-use App\Security\Domain\Exception\UserIsNotAuthenticatedException;
 
 class UserServiceImpl implements UserService
 {
@@ -28,6 +30,7 @@ class UserServiceImpl implements UserService
         private ClientServiceImpl $clientServiceImpl,
         private UserPasswordHasherInterface $passwordHasher,
         private JwtTokenGenerator $jwtTokenGenerator,
+        private ApplicationService $applicationService,
     ) {
     }
 
@@ -63,6 +66,18 @@ class UserServiceImpl implements UserService
         }
         if (isset($data->client)) {
             $user = $this->clientServiceImpl->registerClient($user, $data);
+        }
+
+        try {
+            $this->applicationService->handle(new CreateNotificationCommand(
+                title: '¡Bienvenido/a a VitalTrail!',
+                description: 'Tu cuenta ha sido creada exitosamente. ¡Empezá a explorar rutas!',
+                type: 'welcome',
+                targetUserId: (string) $user->getIdUser(),
+                targetRole: null,
+            ));
+        } catch (\Throwable) {
+            // No-bloqueante: si falla la notificación, no interrumpe el registro
         }
 
         return $this->toDto($user);

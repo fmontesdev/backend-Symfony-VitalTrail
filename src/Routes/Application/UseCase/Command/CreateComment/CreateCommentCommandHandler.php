@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Routes\Application\UseCase\Command\CreateComment;
 
 use App\Routes\Application\UseCase\Command\CreateComment\CreateCommentCommand;
-use App\Routes\Domain\Entity\Comment;
 use App\Routes\Application\Dto\CommentDto;
 use App\Routes\Domain\OutputPort\CommentRepository;
 use App\Routes\Domain\OutputPort\RouteRepository;
 use App\Routes\Application\Service\CommentService;
 use App\Routes\Application\Service\RouteService;
+use App\Notifications\Application\UseCase\Command\CreateNotification\CreateNotificationCommand;
 use App\Security\Domain\Exception\UserIsNotAuthenticatedException;
 use App\Routes\Application\Exception\RouteNotFoundException;
 use App\Routes\Application\Exception\CommentRouteNotFoundException;
+use App\Shared\Application\InputPort\ApplicationService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -23,8 +24,8 @@ class CreateCommentCommandHandler
         private readonly CommentRepository $commentRepository,
         private readonly RouteRepository $routeRepository,
         private readonly CommentService $commentService,
-        private readonly RouteService $routeService
-        
+        private readonly RouteService $routeService,
+        private readonly ApplicationService $applicationService,
     ) {
     }
 
@@ -50,6 +51,22 @@ class CreateCommentCommandHandler
 
         // Guarda el comentario en la base de datos
         $comment = $this->commentService->save($command->data->body, $currentUser, $route, null);
+
+        // Notifica al autor de la ruta, excepto si el comentarista es el mismo autor
+        $routeAuthor = $route->getUser();
+        if ($routeAuthor !== null && (string) $currentUser->getIdUser() !== (string) $routeAuthor->getIdUser()) {
+            try {
+                $this->applicationService->handle(new CreateNotificationCommand(
+                    title: 'Nuevo comentario en tu ruta',
+                    description: 'Alguien comentó en tu ruta "' . $route->getTitle() . '".',
+                    type: 'new_comment',
+                    targetUserId: (string) $routeAuthor->getIdUser(),
+                    targetRole: null,
+                ));
+            } catch (\Throwable) {
+                // No-bloqueante: si falla la notificación, no interrumpe la creación del comentario
+            }
+        }
 
         return $this->commentService->toDto($comment);
 

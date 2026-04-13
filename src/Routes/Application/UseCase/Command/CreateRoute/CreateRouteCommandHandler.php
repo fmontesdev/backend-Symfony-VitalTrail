@@ -9,8 +9,10 @@ use App\Routes\Application\Dto\RouteDto;
 use App\Routes\Application\Service\RouteService;
 use App\Routes\Application\Service\ImageRouteService;
 use App\Routes\Domain\OutputPort\CategoryRouteRepository;
+use App\Notifications\Application\UseCase\Command\CreateNotification\CreateNotificationCommand;
 use App\Security\Domain\Exception\UserIsNotAuthenticatedException;
 use App\Routes\Application\Exception\CategoryRouteNotFoundException;
+use App\Shared\Application\InputPort\ApplicationService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -19,7 +21,8 @@ class CreateRouteCommandHandler
     public function __construct(
         private readonly RouteService $routeService,
         private readonly ImageRouteService $imageService,
-        private readonly CategoryRouteRepository $categoryRouteRepository
+        private readonly CategoryRouteRepository $categoryRouteRepository,
+        private readonly ApplicationService $applicationService,
     ) {
     }
 
@@ -52,7 +55,19 @@ class CreateRouteCommandHandler
         foreach ($images as $image) {
             $route->addImage($image);
         }
-    
+
+        try {
+            $this->applicationService->handle(new CreateNotificationCommand(
+                title: '¡Ruta creada exitosamente!',
+                description: 'Tu ruta "' . $route->getTitle() . '" ya está publicada y visible para la comunidad.',
+                type: 'route_created',
+                targetUserId: (string) $currentUser->getIdUser(),
+                targetRole: null,
+            ));
+        } catch (\Throwable) {
+            // No-bloqueante: si falla la notificación, no interrumpe la creación de la ruta
+        }
+
         return $this->routeService->toDto($route);
     }
 }
